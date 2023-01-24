@@ -1,6 +1,6 @@
-use colored::Colorize;
-
 use crate::utils::is_debug;
+use colored::Colorize;
+use std::io::{self, Write};
 
 pub fn info(message: &str) {
     let debug_mode = is_debug();
@@ -40,4 +40,9 @@ pub fn error(message: &str) {
     }
 
     println!("{} {message}", "ERROR".red().bold())
+}
+
+pub fn question(message: &str) {
+    print!("{} {message}", "INPUT".cyan().bold());
+    io::stdout().flush().expect("Error while flusing");
 }

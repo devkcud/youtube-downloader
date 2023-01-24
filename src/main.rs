@@ -3,7 +3,7 @@ use args::Commands;
 use clap::Parser;
 use colored::Colorize;
 use std::{
-    io::{self, Write},
+    io,
     process::{exit, Command},
 };
 
@@ -56,7 +56,7 @@ fn main() {
             let link = o.link;
 
             if !link.contains("youtube.com") && !link.contains("youtu.be") {
-                println!("Not a valid link: {}", link);
+                console::error(&format!("Not a valid link: {}", link));
                 exit(1);
             }
 
@@ -81,6 +81,7 @@ fn main() {
 
                 console::warn(&format!("Queue length: {} videos", videos.len()));
                 console::warn(&format!("Output path: {}", args.output));
+
                 if o.mp3 {
                     console::warn(&format!("Saving as: .mp3"));
                 } else {
@@ -88,10 +89,10 @@ fn main() {
                 }
 
                 console::info("Getting things ready");
+
                 let mut confirmation = String::new();
 
-                print!("Proceed with download? (Y/n) ");
-                io::stdout().flush().unwrap();
+                console::question("Proceed with download? (Y/n) ");
 
                 io::stdin()
                     .read_line(&mut confirmation)
