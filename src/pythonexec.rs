@@ -22,7 +22,7 @@ pub fn load_playlist(py_exec: &str, url: &str) -> Result<std::process::Output, s
     Command::new(py_exec)
         .args([
             "-c",
-            "import sys, pytube; print('\n'.join(pytube.Playlist(sys.argv[1])))",
+            "import sys, pytube; print('\\n'.join(pytube.Playlist(sys.argv[1])))",
             url,
         ])
         .output()

@@ -2,9 +2,11 @@ use crate::pythonexec::download_video_mp3;
 use args::Commands;
 use clap::Parser;
 use colored::Colorize;
+use core::time;
 use std::{
     io,
     process::{exit, Command},
+    thread,
 };
 
 #[allow(dead_code)]
@@ -53,6 +55,10 @@ fn main() {
     let args = args::YTDPArgs::parse();
     match args.command {
         Commands::Download(o) => {
+            if args.skip {
+                console::warn("SKIPPING CHECKS MAY CAUSE UNWANTED BEHAVIOUR");
+            }
+
             let link = o.link;
 
             if !link.contains("youtube.com") && !link.contains("youtu.be") {
@@ -60,7 +66,7 @@ fn main() {
                 exit(1);
             }
 
-            if link.contains("playlist?list") {
+            if link.contains("playlist") {
                 let playlist = match pythonexec::load_playlist(py_executable, &link) {
                     Ok(o) => o,
                     Err(_) => {
@@ -94,9 +100,13 @@ fn main() {
 
                 console::question("Proceed with download? (Y/n) ");
 
-                io::stdin()
-                    .read_line(&mut confirmation)
-                    .expect("Failed to read line");
+                if !args.skip {
+                    io::stdin()
+                        .read_line(&mut confirmation)
+                        .expect("Failed to read line");
+                } else {
+                    println!();
+                }
 
                 if confirmation.trim() == "" {
                     confirmation = "y".to_string();

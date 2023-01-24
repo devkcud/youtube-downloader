@@ -9,6 +9,10 @@ pub struct YTDPArgs {
     #[arg(short, long, default_value_t=String::from("videos"), global(true))]
     /// Output folder
     pub output: String,
+
+    #[arg(long, action(ArgAction::SetTrue), global(true))]
+    /// Output folder
+    pub skip: bool,
 }
 
 #[derive(Debug, Subcommand)]
