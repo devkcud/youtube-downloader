@@ -2,11 +2,9 @@ use crate::pythonexec::download_video_mp3;
 use args::Commands;
 use clap::Parser;
 use colored::Colorize;
-use core::time;
 use std::{
     io,
     process::{exit, Command},
-    thread,
 };
 
 #[allow(dead_code)]
