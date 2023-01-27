@@ -6,7 +6,7 @@ pub struct YTDPArgs {
     #[clap(subcommand)]
     pub command: Commands,
 
-    #[arg(short, long, default_value_t=String::from("videos"), global(true))]
+    #[arg(short, long, default_value_t=String::from(""), global(true))]
     /// Output folder
     pub output: String,
 
