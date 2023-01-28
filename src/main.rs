@@ -137,8 +137,11 @@ fn main() {
                             pythonexec::download_video_mp4(py_executable, &video, &args.output);
 
                         match command {
-                            Ok(_) => console::ok(&format!("Downloaded {}", video)),
-                            Err(_) => console::error(&format!("Error downloading {}", video)),
+                            Ok(s) => match s.code().unwrap() {
+                                0 => console::ok(&format!("Downloaded {}", video)),
+                                _ => console::error(&format!("Error downloading {}", video)),
+                            },
+                            _ => console::error(&format!("Error downloading {}", video)),
                         }
                     }
                 } else {
@@ -148,8 +151,11 @@ fn main() {
                         let command = download_video_mp3(py_executable, video, &args.output);
 
                         match command {
-                            Ok(_) => console::ok(&format!("Downloaded {}", video)),
-                            Err(_) => console::error(&format!("Error downloading {}", video)),
+                            Ok(s) => match s.code().unwrap() {
+                                0 => console::ok(&format!("Downloaded {}", video)),
+                                _ => console::error(&format!("Error downloading {}", video)),
+                            },
+                            _ => console::error(&format!("Error downloading {}", video)),
                         }
                     }
                 }
@@ -165,8 +171,11 @@ fn main() {
                 let command = pythonexec::download_video_mp4(py_executable, &link, &args.output);
 
                 match command {
-                    Ok(_) => console::ok(&format!("Downloaded {}", link)),
-                    Err(_) => console::error(&format!("Error downloading {}", link)),
+                    Ok(s) => match s.code().unwrap() {
+                        0 => console::ok(&format!("Downloaded {}", link)),
+                        _ => console::error(&format!("Error downloading {}", link)),
+                    },
+                    _ => console::error(&format!("Error downloading {}", link)),
                 }
             } else {
                 console::info("MP3 selected");
@@ -175,8 +184,11 @@ fn main() {
                 let command = download_video_mp3(py_executable, &link, &args.output);
 
                 match command {
-                    Ok(_) => console::ok(&format!("Downloaded {}", &link)),
-                    Err(_) => console::error(&format!("Error downloading {}", &link)),
+                    Ok(s) => match s.code().unwrap() {
+                        0 => console::ok(&format!("Downloaded {}", &link)),
+                        _ => console::error(&format!("Error downloading {}", &link)),
+                    },
+                    _ => console::error(&format!("Error downloading {}", &link)),
                 }
             }
 
