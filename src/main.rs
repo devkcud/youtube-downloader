@@ -43,12 +43,44 @@ fn main() {
         }
     }
 
-    console::info("Adding pip dependencies");
+    let mut confirmation = String::new();
 
-    Command::new(pip_executable)
-        .args(["install", "pytube==12.1.2", "--quiet"])
-        .spawn()
-        .unwrap();
+    console::info("Adding pip dependencies: pytube==12.1.2");
+    console::question("Proceed with download? (y/N) ");
+
+    io::stdin()
+        .read_line(&mut confirmation)
+        .expect("Failed to read line");
+
+    if confirmation.trim() == "" {
+        confirmation = "n".to_string();
+    }
+
+    let confirmation = confirmation.trim();
+
+    match &confirmation.to_lowercase()[..] {
+        "y" => {
+            console::warn("Adding pytube using pip");
+            console::info("Adding pip dependencies: pytube==12.1.2");
+
+            Command::new(pip_executable)
+                .args(["install", "pytube==12.1.2", "--quiet"])
+                .spawn()
+                .unwrap();
+
+            console::info("pytube added");
+        }
+        "n" => {
+            console::warn("The program might be unusable if pytube isn't installed");
+        }
+        _ => {
+            console::error(&format!(
+                "Unexpected answer {}. Aborting",
+                confirmation.red().bold()
+            ));
+            exit(1);
+        }
+    }
 
     let args = args::YTDPArgs::parse();
     match args.command {
